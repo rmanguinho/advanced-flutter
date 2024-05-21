@@ -1,0 +1,4 @@
+enum DomainError {
+  unexpected,
+  sessionExpired
+}
