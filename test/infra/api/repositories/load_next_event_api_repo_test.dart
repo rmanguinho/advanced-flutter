@@ -1,6 +1,7 @@
 import 'package:advanced_flutter/domain/entities/next_event.dart';
 import 'package:advanced_flutter/domain/entities/next_event_player.dart';
 import 'package:advanced_flutter/domain/repositories/load_next_event_repo.dart';
+import 'package:advanced_flutter/infra/api/clients/http_get_client.dart';
 import 'package:advanced_flutter/infra/types/json.dart';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -42,10 +43,6 @@ class NextEventPlayerMapper {
     confirmationDate: DateTime.tryParse(json['confirmationDate'] ?? ''),
     isConfirmed: json['isConfirmed']
   );
-}
-
-abstract class HttpGetClient {
-  Future<T> get<T>({ required String url, Json? params });
 }
 
 class HttpGetClientSpy implements HttpGetClient {
