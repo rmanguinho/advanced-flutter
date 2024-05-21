@@ -1,10 +1,11 @@
 import 'package:advanced_flutter/domain/entities/next_event.dart';
 import 'package:advanced_flutter/domain/entities/next_event_player.dart';
+import 'package:advanced_flutter/domain/repositories/load_next_event_repo.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../helpers/fakes.dart';
 
-class LoadNextEventApiRepository {
+class LoadNextEventApiRepository implements LoadNextEventRepository {
   final HttpGetClient httpClient;
   final String url;
 
@@ -13,6 +14,7 @@ class LoadNextEventApiRepository {
     required this.url
   });
 
+  @override
   Future<NextEvent> loadNextEvent({ required String groupId }) async {
     final event = await httpClient.get(url: url, params: { "groupId": groupId });
     return NextEvent(
