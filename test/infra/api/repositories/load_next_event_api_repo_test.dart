@@ -12,21 +12,23 @@ class LoadNextEventApiRepository {
   });
 
   Future<void> loadNextEvent({ required String groupId }) async {
-    await httpClient.get(url: url);
+    await httpClient.get(url: url, params: { "groupId": groupId });
   }
 }
 
 abstract class HttpGetClient {
-  Future<void> get({ required String url });
+  Future<void> get({ required String url, Map<String, String>? params });
 }
 
 class HttpGetClientSpy implements HttpGetClient {
   String? url;
   int callsCount = 0;
+  Map<String, String>? params;
 
   @override
-  Future<void> get({ required String url }) async {
+  Future<void> get({ required String url, Map<String, String>? params }) async {
     this.url = url;
+    this.params = params;
     callsCount++;
   }
 }
@@ -44,9 +46,10 @@ void main() {
     sut = LoadNextEventApiRepository(httpClient: httpClient, url: url);
   });
 
-  test('should call HttpClient with correct URL', () async {
+  test('should call HttpClient with correct input', () async {
     await sut.loadNextEvent(groupId: groupId);
     expect(httpClient.url, url);
+    expect(httpClient.params, { "groupId": groupId });
     expect(httpClient.callsCount, 1);
   });
 }
