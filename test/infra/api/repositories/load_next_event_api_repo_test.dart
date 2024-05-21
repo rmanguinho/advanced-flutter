@@ -1,7 +1,7 @@
 import 'package:advanced_flutter/domain/entities/next_event.dart';
 import 'package:advanced_flutter/domain/repositories/load_next_event_repo.dart';
 import 'package:advanced_flutter/infra/api/clients/http_get_client.dart';
-import 'package:advanced_flutter/infra/api/mappers/next_event_player_mapper.dart';
+import 'package:advanced_flutter/infra/api/mappers/next_event_mapper.dart';
 import 'package:advanced_flutter/infra/types/json.dart';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -22,14 +22,6 @@ class LoadNextEventApiRepository implements LoadNextEventRepository {
     final json = await httpClient.get<Json>(url: url, params: { "groupId": groupId });
     return NextEventMapper.toObject(json);
   }
-}
-
-class NextEventMapper {
-  static NextEvent toObject(Json json) => NextEvent(
-    groupName: json['groupName'],
-    date: DateTime.parse(json['date']),
-    players: NextEventPlayerMapper.toList(json['players'])
-  );
 }
 
 class HttpGetClientSpy implements HttpGetClient {
