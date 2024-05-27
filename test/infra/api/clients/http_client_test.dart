@@ -16,11 +16,20 @@ class HttpClient {
 }
 
 void main() {
-  test('should request with correct method', () async {
-    final client = ClientSpy();
-    final sut = HttpClient(client: client);
-    await sut.get();
-    expect(client.method, 'get');
-    expect(client.callsCount, 1);
+  late ClientSpy client;
+  late HttpClient sut;
+
+  setUp(() {
+    client = ClientSpy();
+    sut = HttpClient(client: client);
   });
+
+  group('get', () {
+    test('should request with correct method', () async {
+      await sut.get();
+      expect(client.method, 'get');
+      expect(client.callsCount, 1);
+    });
+  });
+
 }
