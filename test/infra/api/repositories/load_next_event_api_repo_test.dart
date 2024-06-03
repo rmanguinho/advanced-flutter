@@ -1,3 +1,4 @@
+import 'package:advanced_flutter/domain/entities/domain_error.dart';
 import 'package:advanced_flutter/infra/api/repositories/load_next_event_api_repo.dart';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -61,5 +62,11 @@ void main() {
     httpClient.error = error;
     final future = sut.loadNextEvent(groupId: groupId);
     expect(future, throwsA(error));
+  });
+
+  test('should throw UnexpectedError on null response', () async {
+    httpClient.response = null;
+    final future = sut.loadNextEvent(groupId: groupId);
+    expect(future, throwsA(DomainError.unexpected));
   });
 }
