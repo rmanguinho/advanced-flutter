@@ -11,6 +11,7 @@ class ClientSpy implements Client {
   String responseJson = '';
   int statusCode = 200;
 
+  void simulateNoContent() => statusCode = 204;
   void simulateBadRequestError() => statusCode = 400;
   void simulateUnauthorizedError() => statusCode = 401;
   void simulateForbiddenError() => statusCode = 403;
