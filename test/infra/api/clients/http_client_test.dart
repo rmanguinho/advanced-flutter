@@ -20,6 +20,7 @@ class HttpClient {
     final response = await client.get(uri, headers: allHeaders);
     switch (response.statusCode) {
       case 200: break;
+      case 401: throw DomainError.sessionExpired;
       default: throw DomainError.unexpected;
     }
   }
@@ -101,6 +102,12 @@ void main() {
       client.simulateBadRequestError();
       final future = sut.get(url: url);
       expect(future, throwsA(DomainError.unexpected));
+    });
+
+    test('should throw SessionExpiredError on 401', () async {
+      client.simulateUnauthorizedError();
+      final future = sut.get(url: url);
+      expect(future, throwsA(DomainError.sessionExpired));
     });
   });
 }
