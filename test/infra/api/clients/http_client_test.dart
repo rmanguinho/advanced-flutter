@@ -158,5 +158,22 @@ void main() {
       expect(data[0]['key'], 'value1');
       expect(data[1]['key'], 'value2');
     });
+
+    test('should return a Map with List', () async {
+      client.responseJson = '''
+        {
+          "key1": "value1",
+          "key2": [{
+            "key": "value1"
+          }, {
+            "key": "value2"
+          }]
+        }
+      ''';
+      final data = await sut.get<Json>(url: url);
+      expect(data['key1'], 'value1');
+      expect(data['key2'][0]['key'], 'value1');
+      expect(data['key2'][1]['key'], 'value2');
+    });
   });
 }
