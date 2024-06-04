@@ -1,4 +1,4 @@
-import 'package:advanced_flutter/domain/entities/domain_error.dart';
+import 'package:advanced_flutter/domain/entities/errors.dart';
 import 'package:advanced_flutter/infra/api/adapters/http_adapter.dart';
 import 'package:advanced_flutter/infra/types/json.dart';
 
@@ -82,31 +82,31 @@ void main() {
     test('should throw UnexpectedError on 400', () async {
       client.simulateBadRequestError();
       final future = sut.get(url: url);
-      expect(future, throwsA(DomainError.unexpected));
+      expect(future, throwsA(const TypeMatcher<UnexpectedError>()));
     });
 
     test('should throw SessionExpiredError on 401', () async {
       client.simulateUnauthorizedError();
       final future = sut.get(url: url);
-      expect(future, throwsA(DomainError.sessionExpired));
+      expect(future, throwsA(const TypeMatcher<SessionExpiredError>()));
     });
 
     test('should throw UnexpectedError on 403', () async {
       client.simulateForbiddenError();
       final future = sut.get(url: url);
-      expect(future, throwsA(DomainError.unexpected));
+      expect(future, throwsA(const TypeMatcher<UnexpectedError>()));
     });
 
     test('should throw UnexpectedError on 404', () async {
       client.simulateNotFoundError();
       final future = sut.get(url: url);
-      expect(future, throwsA(DomainError.unexpected));
+      expect(future, throwsA(const TypeMatcher<UnexpectedError>()));
     });
 
     test('should throw UnexpectedError on 500', () async {
       client.simulateServerError();
       final future = sut.get(url: url);
-      expect(future, throwsA(DomainError.unexpected));
+      expect(future, throwsA(const TypeMatcher<UnexpectedError>()));
     });
 
     test('should return a Map', () async {
