@@ -1,10 +1,10 @@
 import 'package:advanced_flutter/domain/entities/next_event.dart';
 import 'package:advanced_flutter/domain/repositories/load_next_event_repo.dart';
 
-class NextEventLoader {
+final class NextEventLoader {
   final LoadNextEventRepository repo;
 
-  NextEventLoader({
+  const NextEventLoader({
     required this.repo
   });
 

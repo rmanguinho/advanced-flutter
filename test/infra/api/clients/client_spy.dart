@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:http/http.dart';
 
-class ClientSpy implements Client {
+final class ClientSpy implements Client {
   String? method;
   String? url;
   int callsCount = 0;

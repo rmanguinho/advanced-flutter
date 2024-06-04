@@ -7,10 +7,10 @@ import 'package:advanced_flutter/infra/types/json.dart';
 import 'package:dartx/dartx.dart';
 import 'package:http/http.dart';
 
-class HttpAdapter implements HttpGetClient {
+final class HttpAdapter implements HttpGetClient {
   final Client client;
 
-  HttpAdapter({
+  const HttpAdapter({
     required this.client
   });
 

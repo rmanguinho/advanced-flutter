@@ -5,11 +5,11 @@ import 'package:advanced_flutter/infra/api/clients/http_get_client.dart';
 import 'package:advanced_flutter/infra/api/mappers/next_event_mapper.dart';
 import 'package:advanced_flutter/infra/types/json.dart';
 
-class LoadNextEventApiRepository implements LoadNextEventRepository {
+final class LoadNextEventApiRepository implements LoadNextEventRepository {
   final HttpGetClient httpClient;
   final String url;
 
-  LoadNextEventApiRepository({
+  const LoadNextEventApiRepository({
     required this.httpClient,
     required this.url
   });
