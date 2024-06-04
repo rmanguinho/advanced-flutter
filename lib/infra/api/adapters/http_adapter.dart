@@ -15,7 +15,7 @@ final class HttpAdapter implements HttpGetClient {
   });
 
   @override
-  Future<T?> get<T>({ required String url, Json? headers, Map<String, String?>? params, Map<String, String>? queryString }) async {
+  Future<T?> get<T>({ required String url, Json? headers, Json? params, Map<String, String>? queryString }) async {
     final response = await client.get(
       _buildUri(url: url, params: params, queryString: queryString),
       headers: _buildHeaders(url: url, headers: headers)
@@ -41,8 +41,8 @@ final class HttpAdapter implements HttpGetClient {
     return defaultHeaders..addAll({ for (final key in (headers ?? {}).keys) key: headers![key].toString() });
   }
 
-  Uri _buildUri({ required String url, Map<String, String?>? params, Map<String, String>? queryString }) {
-    url = params?.keys.fold(url, (result, key) => result.replaceFirst(':$key', params[key] ?? '')).removeSuffix('/') ?? url;
+  Uri _buildUri({ required String url, Json? params, Map<String, String>? queryString }) {
+    url = params?.keys.fold(url, (result, key) => result.replaceFirst(':$key', params[key]?.toString() ?? '')).removeSuffix('/') ?? url;
     url = queryString?.keys.fold('$url?', (result, key) => '$result$key=${queryString[key]}&').removeSuffix('&') ?? url;
     return Uri.parse(url);
   }
