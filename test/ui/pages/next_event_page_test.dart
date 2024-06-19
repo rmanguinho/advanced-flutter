@@ -229,5 +229,6 @@ void main() {
     expect(find.text('DENTRO - GOLEIROS'), findsNothing);
     expect(find.text('DENTRO - JOGADORES'), findsNothing);
     expect(find.text('FORA'), findsNothing);
+    expect(find.text('DÚVIDA'), findsNothing);
   });
 }
