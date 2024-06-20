@@ -11,6 +11,7 @@ final class PlayerPosition extends StatelessWidget {
 
   String buildPositionLabel() => switch (position) {
     'goalkeeper' => 'Goleiro',
+    'defender' => 'Zagueiro',
     _ => 'Gandula'
   };
 
@@ -24,6 +25,11 @@ void main() {
   testWidgets('should handle goalkeeper position', (tester) async {
     await tester.pumpWidget(const MaterialApp(home: PlayerPosition(position: 'goalkeeper')));
     expect(find.text('Goleiro'), findsOneWidget);
+  });
+
+  testWidgets('should handle defender position', (tester) async {
+    await tester.pumpWidget(const MaterialApp(home: PlayerPosition(position: 'defender')));
+    expect(find.text('Zagueiro'), findsOneWidget);
   });
 
   testWidgets('should handle positionless', (tester) async {
