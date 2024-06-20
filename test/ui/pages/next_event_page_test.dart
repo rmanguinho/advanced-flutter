@@ -1,4 +1,5 @@
 import 'package:advanced_flutter/presentation/presenters/next_event_presenter.dart';
+import 'package:advanced_flutter/ui/components/player_photo.dart';
 import 'package:advanced_flutter/ui/components/player_position.dart';
 import 'package:advanced_flutter/ui/components/player_status.dart';
 import 'package:advanced_flutter/ui/pages/next_event_page.dart';
@@ -76,10 +77,10 @@ void main() {
 
   testWidgets('should present goalkeepers section', (tester) async {
     await tester.pumpWidget(sut);
-    presenter.emitNextEventWith(goalkeepers: const [
-      NextEventPlayerViewModel(name: 'Rodrigo'),
-      NextEventPlayerViewModel(name: 'Rafael'),
-      NextEventPlayerViewModel(name: 'Pedro')
+    presenter.emitNextEventWith(goalkeepers: [
+      NextEventPlayerViewModel(name: 'Rodrigo', initials: anyString()),
+      NextEventPlayerViewModel(name: 'Rafael', initials: anyString()),
+      NextEventPlayerViewModel(name: 'Pedro', initials: anyString())
     ]);
     await tester.pump();
     expect(find.text('DENTRO - GOLEIROS'), findsOneWidget);
@@ -89,14 +90,15 @@ void main() {
     expect(find.text('Pedro'), findsOneWidget);
     expect(find.byType(PlayerPosition), findsExactly(3));
     expect(find.byType(PlayerStatus), findsExactly(3));
+    expect(find.byType(PlayerPhoto), findsExactly(3));
   });
 
   testWidgets('should present players section', (tester) async {
     await tester.pumpWidget(sut);
-    presenter.emitNextEventWith(players: const [
-      NextEventPlayerViewModel(name: 'Rodrigo'),
-      NextEventPlayerViewModel(name: 'Rafael'),
-      NextEventPlayerViewModel(name: 'Pedro')
+    presenter.emitNextEventWith(players: [
+      NextEventPlayerViewModel(name: 'Rodrigo', initials: anyString()),
+      NextEventPlayerViewModel(name: 'Rafael', initials: anyString()),
+      NextEventPlayerViewModel(name: 'Pedro', initials: anyString())
     ]);
     await tester.pump();
     expect(find.text('DENTRO - JOGADORES'), findsOneWidget);
@@ -106,14 +108,15 @@ void main() {
     expect(find.text('Pedro'), findsOneWidget);
     expect(find.byType(PlayerPosition), findsExactly(3));
     expect(find.byType(PlayerStatus), findsExactly(3));
+    expect(find.byType(PlayerPhoto), findsExactly(3));
   });
 
   testWidgets('should present out section', (tester) async {
     await tester.pumpWidget(sut);
-    presenter.emitNextEventWith(out: const [
-      NextEventPlayerViewModel(name: 'Rodrigo'),
-      NextEventPlayerViewModel(name: 'Rafael'),
-      NextEventPlayerViewModel(name: 'Pedro')
+    presenter.emitNextEventWith(out: [
+      NextEventPlayerViewModel(name: 'Rodrigo', initials: anyString()),
+      NextEventPlayerViewModel(name: 'Rafael', initials: anyString()),
+      NextEventPlayerViewModel(name: 'Pedro', initials: anyString())
     ]);
     await tester.pump();
     expect(find.text('FORA'), findsOneWidget);
@@ -123,14 +126,15 @@ void main() {
     expect(find.text('Pedro'), findsOneWidget);
     expect(find.byType(PlayerPosition), findsExactly(3));
     expect(find.byType(PlayerStatus), findsExactly(3));
+    expect(find.byType(PlayerPhoto), findsExactly(3));
   });
 
   testWidgets('should present doubt section', (tester) async {
     await tester.pumpWidget(sut);
-    presenter.emitNextEventWith(doubt: const [
-      NextEventPlayerViewModel(name: 'Rodrigo'),
-      NextEventPlayerViewModel(name: 'Rafael'),
-      NextEventPlayerViewModel(name: 'Pedro')
+    presenter.emitNextEventWith(doubt: [
+      NextEventPlayerViewModel(name: 'Rodrigo', initials: anyString()),
+      NextEventPlayerViewModel(name: 'Rafael', initials: anyString()),
+      NextEventPlayerViewModel(name: 'Pedro', initials: anyString())
     ]);
     await tester.pump();
     expect(find.text('DÚVIDA'), findsOneWidget);
@@ -140,6 +144,7 @@ void main() {
     expect(find.text('Pedro'), findsOneWidget);
     expect(find.byType(PlayerPosition), findsExactly(3));
     expect(find.byType(PlayerStatus), findsExactly(3));
+    expect(find.byType(PlayerPhoto), findsExactly(3));
   });
 
   testWidgets('should hide all sections', (tester) async {
@@ -152,5 +157,6 @@ void main() {
     expect(find.text('DÚVIDA'), findsNothing);
     expect(find.byType(PlayerPosition), findsNothing);
     expect(find.byType(PlayerStatus), findsNothing);
+    expect(find.byType(PlayerPhoto), findsNothing);
   });
 }
