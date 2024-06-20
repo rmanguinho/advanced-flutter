@@ -20,9 +20,11 @@ final class NextEventViewModel {
 final class NextEventPlayerViewModel {
   final String name;
   final String? position;
+  final bool? isConfirmed;
 
   const NextEventPlayerViewModel({
     required this.name,
-    this.position
+    this.position,
+    this.isConfirmed
   });
 }

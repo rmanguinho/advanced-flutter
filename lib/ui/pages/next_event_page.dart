@@ -1,5 +1,6 @@
 import 'package:advanced_flutter/presentation/presenters/next_event_presenter.dart';
 import 'package:advanced_flutter/ui/components/player_position.dart';
+import 'package:advanced_flutter/ui/components/player_status.dart';
 
 import 'package:flutter/material.dart';
 
@@ -66,7 +67,8 @@ final class ListSection extends StatelessWidget {
         ...items.map((player) => Row(
           children: [
             Text(player.name),
-            PlayerPosition(position: player.position)
+            PlayerPosition(position: player.position),
+            PlayerStatus(isConfirmed: player.isConfirmed)
           ]
         ))
       ]
