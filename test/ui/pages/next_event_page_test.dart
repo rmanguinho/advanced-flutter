@@ -210,4 +210,14 @@ void main() {
     await tester.pump();
     expect(find.byType(CircularProgressIndicator), findsNothing);
   });
+
+  testWidgets('should load event data on pull to refresh', (tester) async {
+    await tester.pumpWidget(sut);
+    presenter.emitNextEvent();
+    await tester.pump();
+    await tester.flingFrom(const Offset(50, 100), const Offset(0, 400), 800);
+    await tester.pumpAndSettle();
+    expect(presenter.reloadCallsCount, 1);
+    expect(presenter.groupId, groupId);
+  });
 }
