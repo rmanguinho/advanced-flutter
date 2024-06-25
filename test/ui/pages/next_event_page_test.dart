@@ -195,11 +195,15 @@ void main() {
 
   testWidgets('should load event data on reload click', (tester) async {
     await tester.pumpWidget(sut);
+    expect(presenter.loadCallsCount, 1);
+    expect(presenter.groupId, groupId);
+    expect(presenter.isReload, false);
     presenter.emitError();
     await tester.pump();
     await tester.tap(find.text('Recarregar'));
-    expect(presenter.reloadCallsCount, 1);
+    expect(presenter.loadCallsCount, 2);
     expect(presenter.groupId, groupId);
+    expect(presenter.isReload, true);
   });
 
   testWidgets('should handle spinner on page busy event', (tester) async {
