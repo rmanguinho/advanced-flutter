@@ -82,6 +82,7 @@ void main() {
 
   test('should emit correct events on load with success', () async {
     sut.isBusyStream.listen(neverCalled);
+    expectLater(sut.nextEventStream, emits(const TypeMatcher<NextEventViewModel>()));
     await sut.loadNextEvent(groupId: groupId);
   });
 }
