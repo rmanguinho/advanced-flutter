@@ -5,7 +5,7 @@ import 'package:advanced_flutter/domain/usecases/next_event_loader.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../helpers/fakes.dart';
+import '../../mocks/fakes.dart';
 
 class LoadNextEventSpyRepository implements LoadNextEventRepository {
   String? groupId;

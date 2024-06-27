@@ -3,8 +3,8 @@ import 'package:advanced_flutter/infra/api/repositories/load_next_event_api_repo
 
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../helpers/fakes.dart';
-import '../clients/http_get_client_spy.dart';
+import '../../../mocks/fakes.dart';
+import '../mocks/http_get_client_spy.dart';
 
 void main() {
   late String groupId;
