@@ -35,7 +35,8 @@ final class NextEventRxPresenter {
 
   NextEventViewModel _mapEvent(NextEvent event) => NextEventViewModel(
     doubt: event.players.where((player) => player.confirmationDate == null).sortedBy((player) => player.name).map(_mapPlayer).toList(),
-    out: event.players.where((player) => player.confirmationDate != null && !player.isConfirmed).sortedBy((player) => player.confirmationDate!).map(_mapPlayer).toList()
+    out: event.players.where((player) => player.confirmationDate != null && !player.isConfirmed).sortedBy((player) => player.confirmationDate!).map(_mapPlayer).toList(),
+    goalkeepers: event.players.where((player) => player.confirmationDate != null && player.isConfirmed && player.position == 'goalkeeper').sortedBy((player) => player.confirmationDate!).map(_mapPlayer).toList()
   );
 
   NextEventPlayerViewModel _mapPlayer(NextEventPlayer player) => NextEventPlayerViewModel(
@@ -161,6 +162,23 @@ void main() {
       expect(event.out[0].isConfirmed, player.isConfirmed);
       expect(event.out[0].photo, player.photo);
       expect(event.out[0].position, player.position);
+    });
+    await sut.loadNextEvent(groupId: groupId);
+  });
+
+  test('should build goalkeepers list sorted by confirmation date', () async {
+    nextEventLoader.simulatePlayers([
+      NextEventPlayer(id: anyString(), name: 'C', isConfirmed: true, confirmationDate: DateTime(2024, 1, 1, 10), position: 'goalkeeper'),
+      NextEventPlayer(id: anyString(), name: 'A', isConfirmed: anyBool()),
+      NextEventPlayer(id: anyString(), name: 'B', isConfirmed: true, confirmationDate: DateTime(2024, 1, 1, 11), position: 'defender'),
+      NextEventPlayer(id: anyString(), name: 'E', isConfirmed: false, confirmationDate: DateTime(2024, 1, 1, 9)),
+      NextEventPlayer(id: anyString(), name: 'D', isConfirmed: true, confirmationDate: DateTime(2024, 1, 1, 12)),
+      NextEventPlayer(id: anyString(), name: 'F', isConfirmed: true, confirmationDate: DateTime(2024, 1, 1, 8), position: 'goalkeeper')
+    ]);
+    sut.nextEventStream.listen((event) {
+      expect(event.goalkeepers.length, 2);
+      expect(event.goalkeepers[0].name, 'F');
+      expect(event.goalkeepers[1].name, 'C');
     });
     await sut.loadNextEvent(groupId: groupId);
   });
