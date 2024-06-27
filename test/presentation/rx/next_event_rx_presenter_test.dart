@@ -34,7 +34,8 @@ final class NextEventRxPresenter {
   }
 
   NextEventViewModel _mapEvent(NextEvent event) => NextEventViewModel(
-    doubt: event.players.where((player) => player.confirmationDate == null).sortedBy((player) => player.name).map(_mapPlayer).toList()
+    doubt: event.players.where((player) => player.confirmationDate == null).sortedBy((player) => player.name).map(_mapPlayer).toList(),
+    out: event.players.where((player) => player.confirmationDate != null && !player.isConfirmed).sortedBy((player) => player.confirmationDate!).map(_mapPlayer).toList()
   );
 
   NextEventPlayerViewModel _mapPlayer(NextEventPlayer player) => NextEventPlayerViewModel(
@@ -129,6 +130,23 @@ void main() {
       expect(event.doubt[0].isConfirmed, null);
       expect(event.doubt[0].photo, player.photo);
       expect(event.doubt[0].position, player.position);
+    });
+    await sut.loadNextEvent(groupId: groupId);
+  });
+
+  test('should build out list sorted by confirmation date', () async {
+    nextEventLoader.simulatePlayers([
+      NextEventPlayer(id: anyString(), name: 'C', isConfirmed: false, confirmationDate: DateTime(2024, 1, 1, 10)),
+      NextEventPlayer(id: anyString(), name: 'A', isConfirmed: anyBool()),
+      NextEventPlayer(id: anyString(), name: 'B', isConfirmed: true, confirmationDate: DateTime(2024, 1, 1, 11)),
+      NextEventPlayer(id: anyString(), name: 'E', isConfirmed: false, confirmationDate: DateTime(2024, 1, 1, 9)),
+      NextEventPlayer(id: anyString(), name: 'D', isConfirmed: false, confirmationDate: DateTime(2024, 1, 1, 12))
+    ]);
+    sut.nextEventStream.listen((event) {
+      expect(event.out.length, 3);
+      expect(event.out[0].name, 'E');
+      expect(event.out[1].name, 'C');
+      expect(event.out[2].name, 'D');
     });
     await sut.loadNextEvent(groupId: groupId);
   });
