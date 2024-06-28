@@ -15,7 +15,7 @@ final class HttpAdapter implements HttpGetClient {
   });
 
   @override
-  Future<T?> get<T>({ required String url, Json? headers, Json? params, Json? queryString }) async {
+  Future<dynamic> get({ required String url, Json? headers, Json? params, Json? queryString }) async {
     final response = await client.get(
       _buildUri(url: url, params: params, queryString: queryString),
       headers: _buildHeaders(url: url, headers: headers)
@@ -27,8 +27,7 @@ final class HttpAdapter implements HttpGetClient {
     switch (response.statusCode) {
       case 200: {
         if (response.body.isEmpty) return null;
-        final data = jsonDecode(response.body);
-        return (T == JsonArr) ? data.map<Json>((e) => e as Json).toList() : data;
+        return jsonDecode(response.body);
       }
       case 204: return null;
       case 401: throw SessionExpiredError();

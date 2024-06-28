@@ -11,7 +11,7 @@ final class HttpGetClientSpy implements HttpGetClient {
   Error? error;
 
   @override
-  Future<T?> get<T>({ required String url, Json? headers, Json? params, Json? queryString }) async {
+  Future<dynamic> get({ required String url, Json? headers, Json? params, Json? queryString }) async {
     this.url = url;
     this.params = params;
     this.queryString = queryString;
