@@ -76,8 +76,14 @@ void main() {
     final sut = MaterialApp(home: NextEventPage(presenter: presenter, groupId: anyString()));
     await tester.pumpWidget(sut);
     await tester.pump();
+    await tester.ensureVisible(find.text('Cristiano Ronaldo', skipOffstage: false));
+    await tester.pump();
     expect(find.text('Cristiano Ronaldo'), findsOneWidget);
+    await tester.ensureVisible(find.text('Lionel Messi', skipOffstage: false));
+    await tester.pump();
     expect(find.text('Lionel Messi'), findsOneWidget);
+    await tester.ensureVisible(find.text('Claudio Gamarra', skipOffstage: false));
+    await tester.pump();
     expect(find.text('Claudio Gamarra'), findsOneWidget);
   });
 }
