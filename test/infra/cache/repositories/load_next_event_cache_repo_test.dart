@@ -1,6 +1,7 @@
 import 'package:advanced_flutter/domain/entities/errors.dart';
 import 'package:advanced_flutter/domain/entities/next_event.dart';
 import 'package:advanced_flutter/domain/entities/next_event_player.dart';
+import 'package:advanced_flutter/infra/cache/clients/cache_get_client.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 
@@ -19,10 +20,6 @@ final class CacheGetClientSpy implements CacheGetClient {
     if (error != null) throw error!;
     return response;
   }
-}
-
-abstract interface class CacheGetClient {
-  Future<dynamic> get({ required String key });
 }
 
 final class LoadNextEventCacheRepository {
