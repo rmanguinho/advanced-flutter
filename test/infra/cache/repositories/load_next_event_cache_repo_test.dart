@@ -1,7 +1,6 @@
 import 'package:advanced_flutter/domain/entities/errors.dart';
-import 'package:advanced_flutter/domain/entities/next_event.dart';
 import 'package:advanced_flutter/infra/cache/clients/cache_get_client.dart';
-import 'package:advanced_flutter/infra/cache/mappers/next_event_mapper.dart';
+import 'package:advanced_flutter/infra/cache/repositories/load_next_event_cache_repo.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 
@@ -19,22 +18,6 @@ final class CacheGetClientSpy implements CacheGetClient {
     callsCount++;
     if (error != null) throw error!;
     return response;
-  }
-}
-
-final class LoadNextEventCacheRepository {
-  final CacheGetClient cacheClient;
-  final String key;
-
-  const LoadNextEventCacheRepository({
-    required this.cacheClient,
-    required this.key
-  });
-
-  Future<NextEvent> loadNextEvent({ required String groupId }) async {
-    final json = await cacheClient.get(key: '$key:$groupId');
-    if (json == null) throw UnexpectedError();
-    return NextEventMapper().toObject(json);
   }
 }
 
