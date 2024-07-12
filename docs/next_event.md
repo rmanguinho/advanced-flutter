@@ -28,8 +28,9 @@
 - Precisa executar o método getFileFromCache apenas uma vez
 - Retornar NULL se o FileInfo for NULL
 - Retornar NULL se o cache estiver vencido
-- Precisa executar o método readAsString apenas uma vez
+- Precisa executar o método exists apenas uma vez
 - Retornar NULL se o File não existir
+- Precisa executar o método readAsString apenas uma vez
 - Retornar NULL se o Cache for inválido
 - Retornar NULL se o método getFileFromCache der erro
 - Retornar NULL se o método exists der erro
