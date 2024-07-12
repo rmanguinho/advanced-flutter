@@ -11,8 +11,9 @@ dependencies:
   awesome_flutter_extensions: 1.2.0
   cupertino_icons: ^1.0.2
   dartx: 1.2.0
+  flutter_cache_manager: 3.3.2
   http: 1.2.1
-  rxdart: 0.28.0
+  rxdart: 0.27.7
 
 dev_dependencies:
   flutter_test:

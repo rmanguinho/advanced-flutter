@@ -21,3 +21,17 @@
 - Retornar Unexpected Error em caso de 400, 403, 404 e 500
 - Retornar Session Expired Error em caso de 401
 - Retornar dados do evento em caso de 200
+
+# CacheManagerAdapter
+- Precisa de uma dependência do BaseCacheManager
+- Precisa executar o método getFileFromCache com a key correta
+- Precisa executar o método getFileFromCache apenas uma vez
+- Retornar NULL se o FileInfo for NULL
+- Retornar NULL se o cache estiver vencido
+- Precisa executar o método readAsString apenas uma vez
+- Retornar NULL se o File não existir
+- Retornar NULL se o Cache for inválido
+- Retornar NULL se o método getFileFromCache der erro
+- Retornar NULL se o método exists der erro
+- Retornar NULL se o método readAsString der erro
+- Retornar um JSON se o cache for válido
