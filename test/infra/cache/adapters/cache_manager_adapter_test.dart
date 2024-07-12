@@ -16,9 +16,13 @@ final class CacheManagerAdapter {
 
   Future<dynamic> get({ required String key }) async {
     final info = await client.getFileFromCache(key);
-    await info?.file.exists();
-    await info?.file.readAsString();
-    return null;
+    if (info?.validTill.isBefore(DateTime.now()) != false || !await info!.file.exists()) return null;
+    final data = await info.file.readAsString();
+    try {
+      return jsonDecode(data);
+    } catch (err) {
+      return null;
+    }
   }
 }
 
@@ -30,6 +34,7 @@ final class FileSpy implements File {
 
   void simulateFileEmpty() => _fileExists = false;
   void simulateInvalidResponse() => _response = 'invalid_json';
+  void simulateResponse(String response) => _response = response;
 
   @override
   Future<bool> exists() async {
@@ -276,5 +281,17 @@ void main() {
     client.file.simulateInvalidResponse();
     final json = await sut.get(key: key);
     expect(json, isNull);
+  });
+
+  test('should return json if cache is valid', () async {
+    client.file.simulateResponse('''
+      {
+        "key1": "value1",
+        "key2": "value2"
+      }
+    ''');
+    final json = await sut.get(key: key);
+    expect(json['key1'], 'value1');
+    expect(json['key2'], 'value2');
   });
 }
