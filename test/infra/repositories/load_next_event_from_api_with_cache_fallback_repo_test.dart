@@ -1,3 +1,4 @@
+import 'package:advanced_flutter/domain/entities/errors.dart';
 import 'package:advanced_flutter/domain/entities/next_event.dart';
 import 'package:advanced_flutter/domain/entities/next_event_player.dart';
 import 'package:advanced_flutter/infra/cache/mappers/next_event_mapper.dart';
@@ -26,7 +27,11 @@ final class LoadNextEventFromApiWithCacheFallbackRepository {
       await cacheClient.save(key: '$key:$groupId', value: json);
       return event;
     } catch (error) {
-      return await loadNextEventFromCache(groupId: groupId);
+      try {
+        return await loadNextEventFromCache(groupId: groupId);
+      } catch (error) {
+        throw UnexpectedError();
+      }
     }
   }
 }
@@ -136,5 +141,11 @@ void main() {
     apiRepo.error = Error();
     final event = await sut.loadNextEvent(groupId: groupId);
     expect(event, cacheRepo.output);
+  });
+
+  test('should throw UnexpectedError when api and cache fails', () async {
+    apiRepo.error = Error();
+    cacheRepo.error = Error();
+    sut.loadNextEvent(groupId: groupId).then((_) {}, onError: (error) => expect(error, isA<UnexpectedError>()));
   });
 }
