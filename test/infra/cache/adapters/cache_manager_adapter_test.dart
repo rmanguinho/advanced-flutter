@@ -104,10 +104,9 @@ void main() {
 
     test('should call putFile with correct input', () async {
       await sut.save(key: key, value: value);
-      final fileBytesDecoded = jsonDecode(utf8.decode(client.fileBytes!));
       expect(client.key, key);
       expect(client.fileExtension, 'json');
-      expect(fileBytesDecoded, value);
+      expect(client.fileBytesDecoded, value);
       expect(client.putFileCallsCount, 1);
     });
   });
