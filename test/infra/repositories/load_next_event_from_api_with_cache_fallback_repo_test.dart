@@ -1,6 +1,7 @@
 import 'package:advanced_flutter/domain/entities/errors.dart';
 import 'package:advanced_flutter/domain/entities/next_event.dart';
 import 'package:advanced_flutter/domain/entities/next_event_player.dart';
+import 'package:advanced_flutter/infra/cache/clients/cache_save_client.dart';
 import 'package:advanced_flutter/infra/cache/mappers/next_event_mapper.dart';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -48,10 +49,6 @@ final class LoadNextEventRepositorySpy {
     if (error != null) throw error!;
     return output;
   }
-}
-
-abstract interface class CacheSaveClient {
-  Future<void> save({ required String key, required dynamic value });
 }
 
 final class CacheSaveClientSpy implements CacheSaveClient {
