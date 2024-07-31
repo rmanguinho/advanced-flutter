@@ -91,6 +91,6 @@ void main() {
     apiRepo.error = Error();
     cacheRepo.error = Error();
     final future = sut.loadNextEvent(groupId: groupId);
-    expect(future, throwsA(const TypeMatcher<UnexpectedError>()));
+    expect(future, throwsA(isA<UnexpectedError>()));
   });
 }

@@ -66,6 +66,6 @@ void main() {
   test('should throw UnexpectedError on null response', () async {
     cacheClient.response = null;
     final future = sut.loadNextEvent(groupId: groupId);
-    expect(future, throwsA(const TypeMatcher<UnexpectedError>()));
+    expect(future, throwsA(isA<UnexpectedError>()));
   });
 }
