@@ -1,3 +1,4 @@
+import 'package:advanced_flutter/domain/entities/errors.dart';
 import 'package:advanced_flutter/domain/entities/next_event.dart';
 import 'package:advanced_flutter/infra/cache/clients/cache_save_client.dart';
 import 'package:advanced_flutter/infra/cache/mappers/next_event_mapper.dart';
@@ -21,6 +22,8 @@ final class LoadNextEventFromApiWithCacheFallbackRepository {
       final json = NextEventMapper().toJson(event);
       await cacheClient.save(key: '$key:$groupId', value: json);
       return event;
+    } on SessionExpiredError {
+      rethrow;
     } catch (error) {
       return loadNextEventFromCache(groupId: groupId);
     }
