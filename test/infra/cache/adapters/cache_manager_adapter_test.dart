@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:advanced_flutter/infra/cache/adapters/cache_manager_adapter.dart';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -85,6 +87,23 @@ void main() {
       client.simulateGetFileFromCacheError();
       final json = await sut.get(key: key);
       expect(json, isNull);
+    });
+  });
+
+  group('save', () {
+    test('should call putFile with correct input', () async {
+      final value = {
+        'key1': anyString(),
+        'key2': anyIsoDate(),
+        'key3': anyBool(),
+        'key4': anyInt()
+      };
+      await sut.save(key: key, value: value);
+      final fileBytesDecoded = jsonDecode(utf8.decode(client.fileBytes!));
+      expect(client.key, key);
+      expect(client.fileExtension, 'json');
+      expect(fileBytesDecoded, value);
+      expect(client.putFileCallsCount, 1);
     });
   });
 }
