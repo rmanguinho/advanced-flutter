@@ -22,8 +22,7 @@
 - Retornar Session Expired Error em caso de 401
 - Retornar dados do evento em caso de 200
 
-# CacheManagerAdapter
-- Precisa de uma dependência do BaseCacheManager
+# CacheManagerAdapter Get
 - Precisa executar o método getFileFromCache com a key correta
 - Precisa executar o método getFileFromCache apenas uma vez
 - Retornar NULL se o FileInfo for NULL
@@ -36,3 +35,10 @@
 - Retornar NULL se o método exists der erro
 - Retornar NULL se o método readAsString der erro
 - Retornar um JSON se o cache for válido
+
+# CacheManagerAdapter Save
+- Precisa executar o método putFile com a url correta
+- Precisa executar o método putFile com a fileExtension correto
+- Precisa executar o método putFile com a fileBytes correto
+- Precisa executar o método putFile apenas uma vez
+- Retornar UnexpectedError se o método putFile der erro
