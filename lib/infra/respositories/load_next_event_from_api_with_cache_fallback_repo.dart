@@ -3,9 +3,11 @@ import 'package:advanced_flutter/domain/entities/next_event.dart';
 import 'package:advanced_flutter/infra/cache/clients/cache_save_client.dart';
 import 'package:advanced_flutter/infra/cache/mappers/next_event_mapper.dart';
 
+typedef LoadNextEventRepository = Future<NextEvent> Function({ required String groupId });
+
 final class LoadNextEventFromApiWithCacheFallbackRepository {
-  final Future<NextEvent> Function({ required String groupId }) loadNextEventFromApi;
-  final Future<NextEvent> Function({ required String groupId }) loadNextEventFromCache;
+  final LoadNextEventRepository loadNextEventFromApi;
+  final LoadNextEventRepository loadNextEventFromCache;
   final CacheSaveClient cacheClient;
   final String key;
 
