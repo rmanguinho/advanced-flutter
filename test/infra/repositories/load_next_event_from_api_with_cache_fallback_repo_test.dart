@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../mocks/fakes.dart';
 import '../cache/mocks/cache_save_client_spy.dart';
+import '../mocks/load_next_event_repo_spy.dart';
 
 final class LoadNextEventFromApiWithCacheFallbackRepository {
   final Future<NextEvent> Function({ required String groupId }) loadNextEventFromApi;
@@ -35,20 +36,6 @@ final class LoadNextEventFromApiWithCacheFallbackRepository {
         throw UnexpectedError();
       }
     }
-  }
-}
-
-final class LoadNextEventRepositorySpy {
-  String? groupId;
-  int callsCount = 0;
-  NextEvent output = NextEvent(groupName: anyString(), date: anyDate(), players: []);
-  Error? error;
-
-  Future<NextEvent> loadNextEvent({ required String groupId }) async {
-    this.groupId = groupId;
-    callsCount++;
-    if (error != null) throw error!;
-    return output;
   }
 }
 
