@@ -7,6 +7,7 @@ import 'package:advanced_flutter/infra/cache/mappers/next_event_mapper.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../mocks/fakes.dart';
+import '../cache/mocks/cache_save_client_spy.dart';
 
 final class LoadNextEventFromApiWithCacheFallbackRepository {
   final Future<NextEvent> Function({ required String groupId }) loadNextEventFromApi;
@@ -48,17 +49,6 @@ final class LoadNextEventRepositorySpy {
     callsCount++;
     if (error != null) throw error!;
     return output;
-  }
-}
-
-final class CacheSaveClientSpy implements CacheSaveClient {
-  String? key;
-  dynamic value;
-
-  @override
-  Future<void> save({ required String key, required dynamic value }) async {
-    this.key = key;
-    this.value = value;
   }
 }
 
