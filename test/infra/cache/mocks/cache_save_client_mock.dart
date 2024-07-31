@@ -1,6 +1,6 @@
 import 'package:advanced_flutter/infra/cache/clients/cache_save_client.dart';
 
-final class CacheSaveClientSpy implements CacheSaveClient {
+final class CacheSaveClientMock implements CacheSaveClient {
   String? key;
   dynamic value;
 
