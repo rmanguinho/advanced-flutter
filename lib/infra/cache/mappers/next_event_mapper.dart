@@ -7,13 +7,13 @@ final class NextEventMapper extends Mapper<NextEvent> {
   @override
   NextEvent toObject(dynamic json) => NextEvent(
     groupName: json['groupName'],
-    date: json['date'],
+    date: DateTime.parse(json['date']),
     players: NextEventPlayerMapper().toList(json['players'])
   );
 
   Json toJson(NextEvent event) => {
     'groupName': event.groupName,
-    'date': event.date,
+    'date': event.date.toIso8601String(),
     'players': NextEventPlayerMapper().toJsonArr(event.players)
   };
 }

@@ -40,31 +40,31 @@ void main() {
   test('should save event data from api on cache', () async {
     apiRepo.output = NextEvent(
       groupName: anyString(),
-      date: anyDate(),
+      date: DateTime(2024, 2, 2, 9, 30),
       players: [
         NextEventPlayer(id: anyString(), name: anyString(), isConfirmed: anyBool()),
-        NextEventPlayer(id: anyString(), name: anyString(), isConfirmed: anyBool(), photo: anyString(), position: anyString(), confirmationDate: anyDate())
+        NextEventPlayer(id: anyString(), name: anyString(), isConfirmed: anyBool(), photo: anyString(), position: anyString(), confirmationDate: DateTime(2024, 2, 3, 11, 20))
       ]
     );
     await sut.loadNextEvent(groupId: groupId);
     expect(cacheClient.key, '$key:$groupId');
     expect(cacheClient.value, {
       'groupName': apiRepo.output.groupName,
-      'date': apiRepo.output.date,
+      'date': '2024-02-02T09:30:00.000',
       'players': [{
         'id': apiRepo.output.players[0].id,
         'name': apiRepo.output.players[0].name,
         'isConfirmed': apiRepo.output.players[0].isConfirmed,
         'photo': apiRepo.output.players[0].photo,
         'position': apiRepo.output.players[0].position,
-        'confirmationDate': apiRepo.output.players[0].confirmationDate
+        'confirmationDate': null
       }, {
         'id': apiRepo.output.players[1].id,
         'name': apiRepo.output.players[1].name,
         'isConfirmed': apiRepo.output.players[1].isConfirmed,
         'photo': apiRepo.output.players[1].photo,
         'position': apiRepo.output.players[1].position,
-        'confirmationDate': apiRepo.output.players[1].confirmationDate
+        'confirmationDate': '2024-02-03T11:20:00.000'
       }]
     });
   });
