@@ -1,5 +1,5 @@
 import 'package:advanced_flutter/domain/entities/next_event_player.dart';
-import 'package:advanced_flutter/infra/cache/mappers/mapper.dart';
+import 'package:advanced_flutter/infra/mappers/mapper.dart';
 import 'package:advanced_flutter/infra/types/json.dart';
 
 final class NextEventPlayerMapper extends Mapper<NextEventPlayer> {
