@@ -2,9 +2,9 @@ import 'package:advanced_flutter/domain/entities/next_event_player.dart';
 import 'package:advanced_flutter/infra/mappers/mapper.dart';
 import 'package:advanced_flutter/infra/types/json.dart';
 
-final class NextEventPlayerMapper extends Mapper<NextEventPlayer> {
+final class NextEventPlayerMapper extends ListMapper<NextEventPlayer> {
   @override
-  NextEventPlayer toObject(dynamic json) => NextEventPlayer(
+  NextEventPlayer toDto(dynamic json) => NextEventPlayer(
     id: json['id'],
     name: json['name'],
     position: json['position'],
@@ -13,8 +13,7 @@ final class NextEventPlayerMapper extends Mapper<NextEventPlayer> {
     isConfirmed: json['isConfirmed']
   );
 
-  JsonArr toJsonArr(List<NextEventPlayer> players) => players.map(toJson).toList();
-
+  @override
   Json toJson(NextEventPlayer player) => {
     'id': player.id,
     'name': player.name,
