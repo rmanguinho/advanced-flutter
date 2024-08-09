@@ -19,20 +19,20 @@ final class ClientSpy implements Client {
   void simulateServerError() => statusCode = 500;
 
   @override
-  void close() {}
-
-  @override
-  Future<Response> delete(Uri url, {Map<String, String>? headers, Object? body, Encoding? encoding}) {
-    throw UnimplementedError();
-  }
-
-  @override
   Future<Response> get(Uri url, {Map<String, String>? headers}) async {
     method = 'get';
     callsCount++;
     this.url = url.toString();
     this.headers = headers;
     return Response(responseJson, statusCode);
+  }
+
+  @override
+  void close() {}
+
+  @override
+  Future<Response> delete(Uri url, {Map<String, String>? headers, Object? body, Encoding? encoding}) {
+    throw UnimplementedError();
   }
 
   @override
