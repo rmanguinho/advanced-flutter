@@ -1,3 +1,4 @@
+import 'package:advanced_flutter/domain/entities/next_event_player.dart';
 import 'package:advanced_flutter/infra/mappers/next_event_player_mapper.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -41,5 +42,23 @@ void main() {
     expect(dto.photo, isNull);
     expect(dto.confirmationDate, isNull);
     expect(dto.isConfirmed, json['isConfirmed']);
+  });
+
+  test('should map to json', () {
+    final dto = NextEventPlayer(
+      id: anyString(),
+      name: anyString(),
+      isConfirmed: anyBool(),
+      photo: anyString(),
+      position: anyString(),
+      confirmationDate: DateTime(2024, 8, 29, 13, 0)
+    );
+    final json = sut.toJson(dto);
+    expect(json['id'], dto.id);
+    expect(json['name'], dto.name);
+    expect(json['position'], dto.position);
+    expect(json['photo'], dto.photo);
+    expect(json['confirmationDate'], '2024-08-29T13:00:00.000');
+    expect(json['isConfirmed'], dto.isConfirmed);
   });
 }
