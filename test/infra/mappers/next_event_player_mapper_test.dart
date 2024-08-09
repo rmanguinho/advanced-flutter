@@ -27,4 +27,19 @@ void main() {
     expect(dto.confirmationDate, DateTime(2024, 8, 29, 11, 0));
     expect(dto.isConfirmed, json['isConfirmed']);
   });
+
+  test('should map to dto with empty fields', () {
+    final json = {
+      'id': anyString(),
+      'name': anyString(),
+      'isConfirmed': anyBool()
+    };
+    final dto = sut.toDto(json);
+    expect(dto.id, json['id']);
+    expect(dto.name, json['name']);
+    expect(dto.position, isNull);
+    expect(dto.photo, isNull);
+    expect(dto.confirmationDate, isNull);
+    expect(dto.isConfirmed, json['isConfirmed']);
+  });
 }
