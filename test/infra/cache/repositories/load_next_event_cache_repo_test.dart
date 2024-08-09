@@ -17,19 +17,19 @@ void main() {
     key = anyString();
     cacheClient = CacheGetClientSpy();
     cacheClient.response = {
-      "groupName": "any name",
-      "date": '2024-01-01T10:30:00.000',
-      "players": [{
-        "id": "id 1",
-        "name": "name 1",
-        "isConfirmed": true
+      'groupName': 'any name',
+      'date': '2024-01-01T10:30:00.000',
+      'players': [{
+        'id': 'id 1',
+        'name': 'name 1',
+        'isConfirmed': true
       }, {
-        "id": "id 2",
-        "name": "name 2",
-        "position": "position 2",
-        "photo": "photo 2",
-        "confirmationDate": '2024-01-01T12:30:00.000',
-        "isConfirmed": false
+        'id': 'id 2',
+        'name': 'name 2',
+        'position': 'position 2',
+        'photo': 'photo 2',
+        'confirmationDate': '2024-01-01T12:30:00.000',
+        'isConfirmed': false
       }]
     };
     sut = LoadNextEventCacheRepository(cacheClient: cacheClient, key: key);

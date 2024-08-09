@@ -17,19 +17,19 @@ void main() {
     url = anyString();
     httpClient = HttpGetClientSpy();
     httpClient.response = {
-      "groupName": "any name",
-      "date": "2024-08-30T10:30",
-      "players": [{
-        "id": "id 1",
-        "name": "name 1",
-        "isConfirmed": true
+      'groupName': 'any name',
+      'date': '2024-08-30T10:30',
+      'players': [{
+        'id': 'id 1',
+        'name': 'name 1',
+        'isConfirmed': true
       }, {
-        "id": "id 2",
-        "name": "name 2",
-        "position": "position 2",
-        "photo": "photo 2",
-        "confirmationDate": "2024-08-29T11:00",
-        "isConfirmed": false
+        'id': 'id 2',
+        'name': 'name 2',
+        'position': 'position 2',
+        'photo': 'photo 2',
+        'confirmationDate': '2024-08-29T11:00',
+        'isConfirmed': false
       }]
     };
     sut = LoadNextEventApiRepository(httpClient: httpClient, url: url);
@@ -38,7 +38,7 @@ void main() {
   test('should call HttpClient with correct input', () async {
     await sut.loadNextEvent(groupId: groupId);
     expect(httpClient.url, url);
-    expect(httpClient.params, { "groupId": groupId });
+    expect(httpClient.params, { 'groupId': groupId });
     expect(httpClient.callsCount, 1);
   });
 
