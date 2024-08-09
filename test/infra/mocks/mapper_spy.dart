@@ -1,10 +1,15 @@
 import 'package:advanced_flutter/infra/mappers/mapper.dart';
 import 'package:advanced_flutter/infra/types/json.dart';
 
+import '../../mocks/fakes.dart';
+
 final class MapperSpy<Dto> implements Mapper<Dto> {
   Json? toDtoIntput;
   int toDtoIntputCallsCount = 0;
+  int toJsonCallsCount = 0;
   Dto toDtoOutput;
+  Dto? toJsonIntput;
+  Json toJsonOutput = anyJson();
 
   MapperSpy({
     required this.toDtoOutput
@@ -19,7 +24,8 @@ final class MapperSpy<Dto> implements Mapper<Dto> {
 
   @override
   Json toJson(Dto dto) {
-    // TODO: implement toJson
-    throw UnimplementedError();
+    toJsonIntput = dto;
+    toJsonCallsCount++;
+    return toJsonOutput;
   }
 }

@@ -1,6 +1,5 @@
 import 'package:advanced_flutter/domain/entities/errors.dart';
 import 'package:advanced_flutter/domain/entities/next_event.dart';
-import 'package:advanced_flutter/domain/entities/next_event_player.dart';
 import 'package:advanced_flutter/infra/respositories/load_next_event_from_api_with_cache_fallback_repo.dart';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -8,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../mocks/fakes.dart';
 import '../cache/mocks/cache_save_client_mock.dart';
 import '../mocks/load_next_event_repo_spy.dart';
+import '../mocks/mapper_spy.dart';
 
 void main() {
   late String groupId;
@@ -15,6 +15,7 @@ void main() {
   late LoadNextEventRepositorySpy apiRepo;
   late LoadNextEventRepositorySpy cacheRepo;
   late CacheSaveClientMock cacheClient;
+  late MapperSpy<NextEvent> mapper;
   late LoadNextEventFromApiWithCacheFallbackRepository sut;
 
   setUp(() {
@@ -23,11 +24,13 @@ void main() {
     apiRepo = LoadNextEventRepositorySpy();
     cacheRepo = LoadNextEventRepositorySpy();
     cacheClient = CacheSaveClientMock();
+    mapper = MapperSpy(toDtoOutput: anyNextEvent());
     sut = LoadNextEventFromApiWithCacheFallbackRepository(
       key: key,
       cacheClient: cacheClient,
       loadNextEventFromApi: apiRepo.loadNextEvent,
-      loadNextEventFromCache: cacheRepo.loadNextEvent
+      loadNextEventFromCache: cacheRepo.loadNextEvent,
+      mapper: mapper
     );
   });
 
@@ -38,35 +41,11 @@ void main() {
   });
 
   test('should save event data from api on cache', () async {
-    apiRepo.output = NextEvent(
-      groupName: anyString(),
-      date: DateTime(2024, 2, 2, 9, 30),
-      players: [
-        NextEventPlayer(id: anyString(), name: anyString(), isConfirmed: anyBool()),
-        NextEventPlayer(id: anyString(), name: anyString(), isConfirmed: anyBool(), photo: anyString(), position: anyString(), confirmationDate: DateTime(2024, 2, 3, 11, 20))
-      ]
-    );
     await sut.loadNextEvent(groupId: groupId);
     expect(cacheClient.key, '$key:$groupId');
-    expect(cacheClient.value, {
-      'groupName': apiRepo.output.groupName,
-      'date': '2024-02-02T09:30:00.000',
-      'players': [{
-        'id': apiRepo.output.players[0].id,
-        'name': apiRepo.output.players[0].name,
-        'isConfirmed': apiRepo.output.players[0].isConfirmed,
-        'photo': apiRepo.output.players[0].photo,
-        'position': apiRepo.output.players[0].position,
-        'confirmationDate': null
-      }, {
-        'id': apiRepo.output.players[1].id,
-        'name': apiRepo.output.players[1].name,
-        'isConfirmed': apiRepo.output.players[1].isConfirmed,
-        'photo': apiRepo.output.players[1].photo,
-        'position': apiRepo.output.players[1].position,
-        'confirmationDate': '2024-02-03T11:20:00.000'
-      }]
-    });
+    expect(cacheClient.value, mapper.toJsonOutput);
+    expect(mapper.toJsonIntput, apiRepo.output);
+    expect(mapper.toJsonCallsCount, 1);
   });
 
   test('should return api data on success', () async {

@@ -5,7 +5,7 @@ import '../../mocks/fakes.dart';
 final class LoadNextEventRepositorySpy {
   String? groupId;
   int callsCount = 0;
-  NextEvent output = NextEvent(groupName: anyString(), date: anyDate(), players: []);
+  NextEvent output = anyNextEvent();
   Object? error;
 
   Future<NextEvent> loadNextEvent({ required String groupId }) async {
