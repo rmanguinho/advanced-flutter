@@ -61,4 +61,19 @@ void main() {
     expect(json['confirmationDate'], '2024-08-29T13:00:00.000');
     expect(json['isConfirmed'], dto.isConfirmed);
   });
+
+  test('should map to json with empty fields', () {
+    final dto = NextEventPlayer(
+      id: anyString(),
+      name: anyString(),
+      isConfirmed: anyBool()
+    );
+    final json = sut.toJson(dto);
+    expect(json['id'], dto.id);
+    expect(json['name'], dto.name);
+    expect(json['position'], isNull);
+    expect(json['photo'], isNull);
+    expect(json['confirmationDate'], isNull);
+    expect(json['isConfirmed'], dto.isConfirmed);
+  });
 }
