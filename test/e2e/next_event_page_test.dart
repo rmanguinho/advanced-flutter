@@ -1,5 +1,9 @@
 import 'package:advanced_flutter/infra/api/adapters/http_adapter.dart';
 import 'package:advanced_flutter/infra/api/repositories/load_next_event_api_repo.dart';
+import 'package:advanced_flutter/infra/cache/adapters/cache_manager_adapter.dart';
+import 'package:advanced_flutter/infra/cache/repositories/load_next_event_cache_repo.dart';
+import 'package:advanced_flutter/infra/mappers/next_event_mapper.dart';
+import 'package:advanced_flutter/infra/respositories/load_next_event_from_api_with_cache_fallback_repo.dart';
 import 'package:advanced_flutter/main/factories/infra/mappers/next_event_mapper_factory.dart';
 import 'package:advanced_flutter/presentation/rx/next_event_rx_presenter.dart';
 import 'package:advanced_flutter/ui/pages/next_event_page.dart';
@@ -8,13 +12,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../infra/api/mocks/client_spy.dart';
+import '../infra/cache/mocks/cache_manager_spy.dart';
 import '../mocks/fakes.dart';
 
 void main() {
   late String responseJson;
+  late String key;
+  late NextEventMapper mapper;
   late ClientSpy client;
+  late CacheManagerSpy cacheManager;
   late HttpAdapter httpClient;
+  late CacheManagerAdapter cacheClient;
   late LoadNextEventApiRepository apiRepo;
+  late LoadNextEventCacheRepository cacheRepo;
+  late LoadNextEventFromApiWithCacheFallbackRepository repo;
   late NextEventRxPresenter presenter;
   late MaterialApp sut;
 
@@ -80,19 +91,35 @@ void main() {
   });
 
   setUp(() {
+    key = anyString();
+    mapper = makeNextEventMapper();
     client = ClientSpy();
-    client.responseJson = responseJson;
     httpClient = HttpAdapter(client: client);
     apiRepo = LoadNextEventApiRepository(
       httpClient: httpClient,
       url: anyString(),
-      mapper: makeNextEventMapper()
+      mapper: mapper
     );
-    presenter = NextEventRxPresenter(nextEventLoader: apiRepo.loadNextEvent);
+    cacheManager = CacheManagerSpy();
+    cacheClient = CacheManagerAdapter(client: cacheManager);
+    cacheRepo = LoadNextEventCacheRepository(
+      cacheClient: cacheClient,
+      key: key,
+      mapper: mapper
+    );
+    repo = LoadNextEventFromApiWithCacheFallbackRepository(
+      loadNextEventFromApi: apiRepo.loadNextEvent,
+      loadNextEventFromCache: cacheRepo.loadNextEvent,
+      cacheClient: cacheClient,
+      key: key,
+      mapper: mapper
+    );
+    presenter = NextEventRxPresenter(nextEventLoader: repo.loadNextEvent);
     sut = MaterialApp(home: NextEventPage(presenter: presenter, groupId: anyString()));
   });
 
-  testWidgets('should present next event page', (tester) async {
+  testWidgets('should present api data', (tester) async {
+    client.responseJson = responseJson;
     await tester.pumpWidget(sut);
     await tester.pump();
     await tester.ensureVisible(find.text('Cristiano Ronaldo', skipOffstage: false));
