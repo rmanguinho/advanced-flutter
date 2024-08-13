@@ -11,9 +11,15 @@ import '../infra/api/mocks/client_spy.dart';
 import '../mocks/fakes.dart';
 
 void main() {
-  testWidgets('should present next event page', (tester) async {
-    final client = ClientSpy();
-    client.responseJson = '''
+  late String responseJson;
+  late ClientSpy client;
+  late HttpAdapter httpClient;
+  late LoadNextEventApiRepository apiRepo;
+  late NextEventRxPresenter presenter;
+  late MaterialApp sut;
+
+  setUpAll(() {
+    responseJson = '''
       {
         "id": "1",
         "groupName": "Pelada Chega+",
@@ -71,14 +77,22 @@ void main() {
         }]
       }
     ''';
-    final httpClient = HttpAdapter(client: client);
-    final repo = LoadNextEventApiRepository(
+  });
+
+  setUp(() {
+    client = ClientSpy();
+    client.responseJson = responseJson;
+    httpClient = HttpAdapter(client: client);
+    apiRepo = LoadNextEventApiRepository(
       httpClient: httpClient,
       url: anyString(),
       mapper: makeNextEventMapper()
     );
-    final presenter = NextEventRxPresenter(nextEventLoader: repo.loadNextEvent);
-    final sut = MaterialApp(home: NextEventPage(presenter: presenter, groupId: anyString()));
+    presenter = NextEventRxPresenter(nextEventLoader: apiRepo.loadNextEvent);
+    sut = MaterialApp(home: NextEventPage(presenter: presenter, groupId: anyString()));
+  });
+
+  testWidgets('should present next event page', (tester) async {
     await tester.pumpWidget(sut);
     await tester.pump();
     await tester.ensureVisible(find.text('Cristiano Ronaldo', skipOffstage: false));
