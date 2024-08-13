@@ -132,4 +132,20 @@ void main() {
     await tester.pump();
     expect(find.text('Claudio Gamarra'), findsOneWidget);
   });
+
+  testWidgets('should present cache data', (tester) async {
+    client.simulateServerError();
+    cacheManager.file.simulateResponse(responseJson);
+    await tester.pumpWidget(sut);
+    await tester.pump();
+    await tester.ensureVisible(find.text('Cristiano Ronaldo', skipOffstage: false));
+    await tester.pump();
+    expect(find.text('Cristiano Ronaldo'), findsOneWidget);
+    await tester.ensureVisible(find.text('Lionel Messi', skipOffstage: false));
+    await tester.pump();
+    expect(find.text('Lionel Messi'), findsOneWidget);
+    await tester.ensureVisible(find.text('Claudio Gamarra', skipOffstage: false));
+    await tester.pump();
+    expect(find.text('Claudio Gamarra'), findsOneWidget);
+  });
 }
