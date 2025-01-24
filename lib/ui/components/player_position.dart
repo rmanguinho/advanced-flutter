@@ -19,6 +19,6 @@ final class PlayerPosition extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(buildPositionLabel(), style: context.textStyles.labelMedium.apply(color: context.colors.scheme.primary.withOpacity(0.7)));
+    return Text(buildPositionLabel(), style: context.textStyles.labelMedium.apply(color: context.colors.scheme.primary.withValues(alpha: 0.7)));
   }
 }

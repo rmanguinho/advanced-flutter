@@ -111,7 +111,7 @@ final class ListSection extends StatelessWidget {
         ),
         const Divider(),
         ...items.map((player) => Container(
-          color: context.colors.scheme.onSurface.withOpacity(0.03),
+          color: context.colors.scheme.onSurface.withValues(alpha: 0.03),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Row(
             children: [
