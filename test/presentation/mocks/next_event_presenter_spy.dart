@@ -1,4 +1,6 @@
 import 'package:advanced_flutter/presentation/presenters/next_event_presenter.dart';
+import 'package:advanced_flutter/presentation/viewmodels/next_event_player_viewmodel.dart';
+import 'package:advanced_flutter/presentation/viewmodels/next_event_viewmodel.dart';
 
 import 'package:rxdart/rxdart.dart';
 
