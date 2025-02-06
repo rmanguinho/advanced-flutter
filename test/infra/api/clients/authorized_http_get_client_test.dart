@@ -17,10 +17,10 @@ final class AuthorizedHttpGetClient {
     required this.httpClient
   });
 
-  Future<void> get({ required String url, Json? params, Json? queryString, Json? headers }) async {
+  Future<dynamic> get({ required String url, Json? params, Json? queryString, Json? headers }) async {
     final user = await cacheClient.get(key: 'current_user');
     if (user?['accessToken'] != null) headers = (headers ?? {})..addAll({ 'authorization': user['accessToken'] });
-    await httpClient.get(url: url, params: params, queryString: queryString, headers: headers);
+    return httpClient.get(url: url, params: params, queryString: queryString, headers: headers);
   }
 }
 
@@ -107,5 +107,10 @@ void main() {
     httpClient.error = error;
     final future = sut.get(url: url);
     expect(future, throwsA(error));
+  });
+
+  test('should return same result as HttpClient', () async {
+    final response = await sut.get(url: url);
+    expect(response, httpClient.response);
   });
 }
