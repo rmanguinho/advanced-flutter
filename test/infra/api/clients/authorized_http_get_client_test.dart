@@ -19,7 +19,7 @@ final class AuthorizedHttpGetClient {
 
   Future<void> get({ required String url, Json? params, Json? queryString, Json? headers }) async {
     final user = await cacheClient.get(key: 'current_user');
-    if (user != null) headers = (headers ?? {})..addAll({ 'authorization': user?['accessToken'] });
+    if (user?['accessToken'] != null) headers = (headers ?? {})..addAll({ 'authorization': user['accessToken'] });
     await httpClient.get(url: url, params: params, queryString: queryString, headers: headers);
   }
 }
@@ -81,5 +81,17 @@ void main() {
     cacheClient.response = { 'accessToken': token };
     await sut.get(url: url, headers: { 'q1': 'v1', 'q2': 'v2' });
     expect(httpClient.headers, { 'authorization': token, 'q1': 'v1', 'q2': 'v2' });
+  });
+
+  test('should call HttpClient with invalid cache', () async {
+    cacheClient.response = { 'invalid': 'invalid' };
+    await sut.get(url: url, headers: { 'q1': 'v1', 'q2': 'v2' });
+    expect(httpClient.headers, { 'q1': 'v1', 'q2': 'v2' });
+  });
+
+  test('should call HttpClient with invalid cache and null headers', () async {
+    cacheClient.response = { 'invalid': 'invalid' };
+    await sut.get(url: url, headers: null);
+    expect(httpClient.headers, isNull);
   });
 }
