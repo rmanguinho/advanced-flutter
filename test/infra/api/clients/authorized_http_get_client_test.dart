@@ -101,4 +101,11 @@ void main() {
     final future = sut.get(url: url);
     expect(future, throwsA(error));
   });
+
+  test('should rethrow on HttpClient error', () async {
+    final error = Error();
+    httpClient.error = error;
+    final future = sut.get(url: url);
+    expect(future, throwsA(error));
+  });
 }
