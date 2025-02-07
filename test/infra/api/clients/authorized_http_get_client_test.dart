@@ -1,5 +1,4 @@
-import 'package:advanced_flutter/infra/api/clients/http_get_client.dart';
-import 'package:advanced_flutter/infra/cache/clients/cache_get_client.dart';
+import 'package:advanced_flutter/infra/api/clients/authorized_http_get_client.dart';
 import 'package:advanced_flutter/infra/types/json.dart';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -7,22 +6,6 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../mocks/fakes.dart';
 import '../../cache/mocks/cache_get_client_spy.dart';
 import '../mocks/http_get_client_spy.dart';
-
-final class AuthorizedHttpGetClient {
-  final CacheGetClient cacheClient;
-  final HttpGetClient httpClient;
-
-  const AuthorizedHttpGetClient({
-    required this.cacheClient,
-    required this.httpClient
-  });
-
-  Future<dynamic> get({ required String url, Json? params, Json? queryString, Json? headers }) async {
-    final user = await cacheClient.get(key: 'current_user');
-    if (user?['accessToken'] != null) headers = (headers ?? {})..addAll({ 'authorization': user['accessToken'] });
-    return httpClient.get(url: url, params: params, queryString: queryString, headers: headers);
-  }
-}
 
 void main() {
   late CacheGetClientSpy cacheClient;
