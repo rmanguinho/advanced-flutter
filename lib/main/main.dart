@@ -1,8 +1,11 @@
+import 'package:advanced_flutter/main/factories/infra/cache/adapters/cache_manager_adapter_factory.dart';
 import 'package:advanced_flutter/main/factories/ui/pages/next_event_page_factory.dart';
 
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await makeCacheManagerAdapter().save(key: 'current_user', value: { 'accessToken': 'valid_token' });
   runApp(const MyApp());
 }
 
